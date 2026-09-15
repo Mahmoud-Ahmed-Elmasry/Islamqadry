@@ -1,25 +1,20 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>د. إسلام قدري | الصحة النفسية والإرشاد الأسري</title>
+    <title data-i18n="metaTitle">د. إسلام قدري | الصحة النفسية والإرشاد الأسري</title>
 
     <meta
         name="description"
-        content="الموقع الرسمي لد. إسلام قدري في مجال الصحة النفسية والإرشاد الأسري، والتعريف بالخدمات والمجالات وطرق التواصل والحجز."
+        data-i18n-content="metaDescription"
+        content="الموقع الرسمي لد. إسلام قدري في مجال الصحة النفسية والإرشاد الأسري."
     >
 
     <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#0b0907">
 
-    <meta name="author" content="د. إسلام قدري">
-
-    <meta name="theme-color" content="#0b0a08">
-
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -28,973 +23,1036 @@
         rel="stylesheet"
     >
 
-    <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-    <!-- ================= HEADER ================= -->
+<header class="site-header" id="siteHeader">
 
-    <header class="header">
+    <div class="container nav-wrap">
 
-        <div class="container nav-container">
+        <a class="brand" href="#home">
+            <img src="assets/logo.png" alt="شعار د. إسلام قدري">
 
-            <a href="#home" class="logo-area">
+            <span class="brand-copy">
+                <strong data-i18n="doctorName">د. إسلام قدري</strong>
+                <small data-i18n="doctorField">
+                    الصحة النفسية والإرشاد الأسري
+                </small>
+            </span>
+        </a>
 
-                <img
-                    src="assets/logo.png"
-                    alt="شعار د. إسلام قدري"
-                    class="logo"
-                >
+        <nav class="desktop-nav">
+            <a href="#home" data-i18n="navHome">الرئيسية</a>
+            <a href="#about" data-i18n="navAbout">عن الدكتور</a>
+            <a href="#services" data-i18n="navServices">المجالات</a>
+            <a href="#packages" data-i18n="navPackages">الباقات</a>
+            <a href="#gallery" data-i18n="navGallery">الصور</a>
+            <a href="#videos" data-i18n="navVideos">الفيديوهات</a>
+            <a href="#contact" data-i18n="navContact">تواصل</a>
+        </nav>
 
-                <div class="logo-text">
-                    <strong>د. إسلام قدري</strong>
-                    <span>الصحة النفسية والإرشاد الأسري</span>
-                </div>
+        <div class="nav-actions">
 
+            <button
+                class="icon-btn"
+                id="themeToggle"
+                type="button"
+                aria-label="Toggle theme"
+            >
+                ☀
+            </button>
+
+            <button
+                class="lang-btn"
+                id="languageToggle"
+                type="button"
+            >
+                EN
+            </button>
+
+            <a
+                class="btn header-book"
+                href="tel:01000297411"
+                data-i18n="bookNow"
+            >
+                احجز الآن
             </a>
-
-
-            <nav class="nav">
-
-                <a href="#home">الرئيسية</a>
-
-                <a href="#about">عن الدكتور</a>
-
-                <a href="#services">المجالات</a>
-
-                <a href="#packages">الباقات</a>
-
-                <a href="#gallery">الصور</a>
-
-                <a href="#videos">الفيديوهات</a>
-
-                <a href="#contact">تواصل</a>
-
-            </nav>
-
-
-            <div class="header-actions">
-
-                <!-- Theme -->
-                <button
-                    class="theme-btn"
-                    id="themeToggle"
-                    aria-label="تغيير الوضع"
-                >
-                    ☀
-                </button>
-
-                <a
-                    href="tel:01000297411"
-                    class="btn header-btn"
-                >
-                    احجز الآن
-                </a>
-
-            </div>
-
 
             <button
                 class="menu-btn"
                 id="menuBtn"
-                aria-label="فتح القائمة"
+                type="button"
             >
                 ☰
             </button>
 
         </div>
 
+    </div>
 
-        <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
 
-        <div class="mobile-menu" id="mobileMenu">
+        <a href="#home" data-i18n="navHome">الرئيسية</a>
+        <a href="#about" data-i18n="navAbout">عن الدكتور</a>
+        <a href="#services" data-i18n="navServices">المجالات</a>
+        <a href="#packages" data-i18n="navPackages">الباقات</a>
+        <a href="#gallery" data-i18n="navGallery">الصور</a>
+        <a href="#videos" data-i18n="navVideos">الفيديوهات</a>
+        <a href="#contact" data-i18n="navContact">تواصل</a>
 
-            <a href="#home">الرئيسية</a>
+        <a
+            class="mobile-book"
+            href="tel:01000297411"
+            data-i18n="bookNow"
+        >
+            احجز الآن
+        </a>
 
-            <a href="#about">عن الدكتور</a>
+    </div>
 
-            <a href="#services">المجالات</a>
+</header>
 
-            <a href="#packages">الباقات</a>
 
-            <a href="#gallery">الصور</a>
+<main>
 
-            <a href="#videos">الفيديوهات</a>
+    <!-- HERO -->
+    <section class="hero" id="home">
 
-            <a href="#contact">تواصل</a>
+        <div class="hero-orb orb-one"></div>
+        <div class="hero-orb orb-two"></div>
+
+        <div class="container hero-grid">
+
+            <div class="hero-copy">
+
+                <span
+                    class="eyebrow"
+                    data-i18n="heroEyebrow"
+                >
+                    الصحة النفسية تستحق الاهتمام
+                </span>
+
+                <h1 data-i18n="heroTitle">
+                    مساحة آمنة لفهم نفسك وبناء خطوات أوضح.
+                </h1>
+
+                <p data-i18n="heroText">
+                    د. إسلام قدري، متخصص في مجالات الصحة النفسية والإرشاد
+                    الأسري، مع اهتمام بالمشكلات النفسية والعلاقات ودعم رحلة التغيير.
+                </p>
+
+                <div class="hero-actions">
+
+                    <a
+                        class="btn"
+                        href="tel:01000297411"
+                        data-i18n="heroBook"
+                    >
+                        احجز جلستك
+                    </a>
+
+                    <a
+                        class="btn btn-outline"
+                        href="#about"
+                        data-i18n="heroAbout"
+                    >
+                        تعرف على الدكتور
+                    </a>
+
+                </div>
+
+            </div>
+
+            <div class="hero-logo-card">
+
+                <div class="hero-ring"></div>
+
+                <img
+                    src="assets/logo.png"
+                    alt="شعار د. إسلام قدري"
+                >
+
+            </div>
 
         </div>
 
-    </header>
+    </section>
 
 
-    <!-- ================= HERO ================= -->
+    <!-- ABOUT -->
+    <section class="section" id="about">
 
-    <main id="home">
+        <div class="container">
 
-        <section class="hero">
+            <div class="section-heading">
 
-            <div class="hero-glow"></div>
+                <span>ABOUT</span>
 
-            <div class="container hero-grid">
+                <h2 data-i18n="aboutTitle">
+                    عن د. إسلام قدري
+                </h2>
 
-                <div class="hero-content">
-
-                    <span class="eyebrow">
-                        الصحة النفسية تستحق الاهتمام
-                    </span>
-
-                    <h1>
-                        مساحة آمنة
-                        <br>
-                        <span>لفهم نفسك</span>
-                        وبناء خطوات أوضح.
-                    </h1>
-
-                    <p>
-                        د. إسلام قدري، متخصص في مجالات الصحة النفسية
-                        والإرشاد الأسري، مع اهتمام بفهم المشكلات النفسية
-                        والعلاقات ودعم رحلة التغيير.
-                    </p>
-
-                    <div class="hero-buttons">
-
-                        <a
-                            href="tel:01000297411"
-                            class="btn"
-                        >
-                            احجز جلستك
-                        </a>
-
-                        <a
-                            href="#about"
-                            class="btn btn-outline"
-                        >
-                            تعرف على الدكتور
-                        </a>
-
-                    </div>
-
-                </div>
-
-
-                <div class="hero-visual">
-
-                    <div class="hero-card">
-
-                        <div class="hero-card-glow"></div>
-
-                        <img
-                            src="assets/logo.png"
-                            alt="د. إسلام قدري"
-                        >
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================= ABOUT ================= -->
-
-        <section class="section" id="about">
-
-            <div class="container">
-
-                <div class="section-title">
-
-                    <span>ABOUT</span>
-
-                    <h2>
-                        عن د. إسلام قدري
-                    </h2>
-
-                    <p>
-                        نبذة تعريفية عن الدكتور ومجالات عمله والمؤهلات
-                        التي سيتم اعتمادها في النسخة النهائية للموقع.
-                    </p>
-
-                </div>
-
-
-                <div class="about-grid">
-
-                    <div class="card about-card">
-
-                        <span class="card-number">
-                            01
-                        </span>
-
-                        <h3>
-                            نبذة مهنية
-                        </h3>
-
-                        <p>
-                            د. إسلام قدري إسماعيل، يعمل في مجال الصحة النفسية
-                            والإرشاد الأسري، ويقدم مساحة مخصصة للتعريف
-                            بالمشكلات النفسية والعلاقات والخدمات الاستشارية.
-                        </p>
-
-                        <div class="facts">
-
-                            <div class="fact">
-                                <span>الاسم</span>
-                                <strong>إسلام قدري إسماعيل</strong>
-                            </div>
-
-                            <div class="fact">
-                                <span>المجال</span>
-                                <strong>الصحة النفسية والإرشاد الأسري</strong>
-                            </div>
-
-                            <div class="fact">
-                                <span>التخصص</span>
-                                <strong>المشكلات والاضطرابات النفسية</strong>
-                            </div>
-
-                            <div class="fact">
-                                <span>التواصل</span>
-                                <strong>01000297411</strong>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="card credentials-card">
-
-                        <span class="card-number">
-                            02
-                        </span>
-
-                        <h3>
-                            المؤهلات
-                        </h3>
-
-                        <div class="credential">
-
-                            <div class="credential-icon">
-                                ✓
-                            </div>
-
-                            <div>
-                                <h4>
-                                    Professional Master
-                                </h4>
-
-                                <p>
-                                    Mental Health and Family Counseling
-                                </p>
-                            </div>
-
-                        </div>
-
-
-                        <div class="credential">
-
-                            <div class="credential-icon">
-                                ✓
-                            </div>
-
-                            <div>
-                                <h4>
-                                    Professional Doctorate
-                                </h4>
-
-                                <p>
-                                    Mental Health and Family Counseling
-                                </p>
-                            </div>
-
-                        </div>
-
-
-                        <div class="credential">
-
-                            <div class="credential-icon">
-                                ✓
-                            </div>
-
-                            <div>
-                                <h4>
-                                    British Board
-                                </h4>
-
-                                <p>
-                                    Certificate of Excellence in Professional Study
-                                </p>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================= MESSAGE ================= -->
-
-        <section class="message-section">
-
-            <div class="container">
-
-                <div class="message-box">
-
-                    <span>
-                        أحيانًا الكلام هو أول خطوة
-                    </span>
-
-                    <h2>
-                        مش كل وجع بيبان...
-                        <br>
-                        ومش كل حاجة تقدر تحكيها لأي حد.
-                    </h2>
-
-                    <p>
-                        خُد وقتك، افهم اللي جواك، وابدأ خطوة جديدة
-                        في مساحة قائمة على الاستماع والخصوصية.
-                    </p>
-
-                    <a
-                        href="tel:01000297411"
-                        class="btn"
-                    >
-                        ابدأ التواصل
-                    </a>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================= SERVICES ================= -->
-
-        <section class="section" id="services">
-
-            <div class="container">
-
-                <div class="section-title">
-
-                    <span>SERVICES</span>
-
-                    <h2>
-                        المجالات والاستشارات
-                    </h2>
-
-                    <p>
-                        قسم قابل للتعديل حسب الخدمات التي سيتم اعتمادها
-                        بشكل نهائي.
-                    </p>
-
-                </div>
-
-
-                <div class="services-grid">
-
-                    <article class="service-card">
-
-                        <div class="service-icon">
-                            🧠
-                        </div>
-
-                        <h3>
-                            الصحة النفسية
-                        </h3>
-
-                        <p>
-                            دعم واستشارات في مجالات الصحة النفسية
-                            والمشكلات الانفعالية.
-                        </p>
-
-                    </article>
-
-
-                    <article class="service-card">
-
-                        <div class="service-icon">
-                            ◉
-                        </div>
-
-                        <h3>
-                            الاضطرابات النفسية
-                        </h3>
-
-                        <p>
-                            قسم مخصص للتعريف بالاضطرابات والمشكلات
-                            التي يحددها الدكتور.
-                        </p>
-
-                    </article>
-
-
-                    <article class="service-card">
-
-                        <div class="service-icon">
-                            ◎
-                        </div>
-
-                        <h3>
-                            اضطرابات الشخصية
-                        </h3>
-
-                        <p>
-                            محتوى تعريفي ومعلومات حول اضطرابات الشخصية
-                            ومجالات التعامل معها.
-                        </p>
-
-                    </article>
-
-
-                    <article class="service-card">
-
-                        <div class="service-icon">
-                            ♧
-                        </div>
-
-                        <h3>
-                            الإرشاد الأسري
-                        </h3>
-
-                        <p>
-                            استشارات ومحتوى متعلق بالعلاقات والتواصل
-                            والمشكلات الأسرية.
-                        </p>
-
-                    </article>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================= PACKAGES ================= -->
-
-        <section class="section packages-section" id="packages">
-
-            <div class="container">
-
-                <div class="section-title">
-
-                    <span>PACKAGES</span>
-
-                    <h2>
-                        الجلسات والباقات
-                    </h2>
-
-                    <p>
-                        الأسعار الحالية موضوعة مؤقتًا بصفر حتى يتم تعديلها.
-                    </p>
-
-                </div>
-
-
-                <div class="packages-grid">
-
-
-                    <article class="package-card">
-
-                        <div class="package-top">
-
-                            <span>
-                                جلسة
-                            </span>
-
-                            <div class="package-price">
-                                <strong>0</strong>
-                                <small>جنيه</small>
-                            </div>
-
-                        </div>
-
-                        <h3>
-                            جلسة فردية
-                        </h3>
-
-                        <p>
-                            جلسة استشارية فردية.
-                        </p>
-
-                        <ul>
-
-                            <li>جلسة فردية</li>
-
-                            <li>التفاصيل تحدد لاحقًا</li>
-
-                            <li>الحجز عبر الهاتف</li>
-
-                        </ul>
-
-                        <a
-                            href="tel:01000297411"
-                            class="btn full"
-                        >
-                            احجز الآن
-                        </a>
-
-                    </article>
-
-
-                    <article class="package-card featured">
-
-                        <div class="popular">
-                            الأكثر طلبًا
-                        </div>
-
-                        <div class="package-top">
-
-                            <span>
-                                باقة
-                            </span>
-
-                            <div class="package-price">
-                                <strong>0</strong>
-                                <small>جنيه</small>
-                            </div>
-
-                        </div>
-
-                        <h3>
-                            باقة 4 جلسات
-                        </h3>
-
-                        <p>
-                            باقة قابلة للتعديل حسب نظام الدكتور.
-                        </p>
-
-                        <ul>
-
-                            <li>4 جلسات</li>
-
-                            <li>تفاصيل الباقة تحدد لاحقًا</li>
-
-                            <li>السعر قابل للتعديل</li>
-
-                        </ul>
-
-                        <a
-                            href="tel:01000297411"
-                            class="btn full"
-                        >
-                            استفسر عن الباقة
-                        </a>
-
-                    </article>
-
-
-                    <article class="package-card">
-
-                        <div class="package-top">
-
-                            <span>
-                                مخصصة
-                            </span>
-
-                            <div class="package-price">
-                                <strong>0</strong>
-                                <small>جنيه</small>
-                            </div>
-
-                        </div>
-
-                        <h3>
-                            باقة مخصصة
-                        </h3>
-
-                        <p>
-                            يتم تحديد محتوى الباقة والسعر لاحقًا.
-                        </p>
-
-                        <ul>
-
-                            <li>خدمة قابلة للتخصيص</li>
-
-                            <li>تفاصيل تحدد لاحقًا</li>
-
-                            <li>السعر قابل للتعديل</li>
-
-                        </ul>
-
-                        <a
-                            href="tel:01000297411"
-                            class="btn full"
-                        >
-                            تواصل الآن
-                        </a>
-
-                    </article>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================= GALLERY ================= -->
-
-        <section class="section" id="gallery">
-
-            <div class="container">
-
-                <div class="section-title">
-
-                    <span>GALLERY</span>
-
-                    <h2>
-                        معرض الصور
-                    </h2>
-
-                    <p>
-                        الصور سيتم إضافتها لاحقًا، والمكان جاهز للسلايدر.
-                    </p>
-
-                </div>
-
-
-                <div class="gallery-wrapper">
-
-                    <button
-                        class="slider-btn prev"
-                        id="galleryPrev"
-                    >
-                        ‹
-                    </button>
-
-
-                    <div class="gallery-track" id="galleryTrack">
-
-                        <div class="gallery-item placeholder">
-                            <span>01</span>
-                            <p>
-                                صورة الدكتور
-                            </p>
-                        </div>
-
-                        <div class="gallery-item placeholder">
-                            <span>02</span>
-                            <p>
-                                صورة من العيادة
-                            </p>
-                        </div>
-
-                        <div class="gallery-item placeholder">
-                            <span>03</span>
-                            <p>
-                                صورة الشهادات
-                            </p>
-                        </div>
-
-                    </div>
-
-
-                    <button
-                        class="slider-btn next"
-                        id="galleryNext"
-                    >
-                        ›
-                    </button>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================= VIDEOS ================= -->
-
-        <section class="section videos-section" id="videos">
-
-            <div class="container">
-
-                <div class="section-title">
-
-                    <span>VIDEOS</span>
-
-                    <h2>
-                        فيديوهات الدكتور
-                    </h2>
-
-                    <p>
-                        أماكن جاهزة لإضافة فيديوهات الدكتور لاحقًا.
-                    </p>
-
-                </div>
-
-
-                <div class="videos-grid">
-
-                    <div class="video-placeholder">
-
-                        <div class="play">
-                            ▶
-                        </div>
-
-                        <span>
-                            فيديو 01
-                        </span>
-
-                    </div>
-
-
-                    <div class="video-placeholder">
-
-                        <div class="play">
-                            ▶
-                        </div>
-
-                        <span>
-                            فيديو 02
-                        </span>
-
-                    </div>
-
-
-                    <div class="video-placeholder">
-
-                        <div class="play">
-                            ▶
-                        </div>
-
-                        <span>
-                            فيديو 03
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================= FAQ ================= -->
-
-        <section class="section">
-
-            <div class="container">
-
-                <div class="section-title">
-
-                    <span>FAQ</span>
-
-                    <h2>
-                        الأسئلة الشائعة
-                    </h2>
-
-                </div>
-
-
-                <div class="faq">
-
-                    <details>
-
-                        <summary>
-                            كيف يمكن حجز جلسة؟
-                        </summary>
-
-                        <p>
-                            يمكنك التواصل مباشرة عبر الرقم
-                            01000297411 لمعرفة التفاصيل والمواعيد المتاحة.
-                        </p>
-
-                    </details>
-
-
-                    <details>
-
-                        <summary>
-                            ما أسعار الجلسات؟
-                        </summary>
-
-                        <p>
-                            الأسعار الموجودة حاليًا مؤقتة وسيتم تعديلها
-                            قبل إطلاق الموقع بشكل نهائي.
-                        </p>
-
-                    </details>
-
-
-                    <details>
-
-                        <summary>
-                            هل يمكن إضافة خدمات أخرى؟
-                        </summary>
-
-                        <p>
-                            نعم، الموقع مصمم بحيث يمكن إضافة وتعديل
-                            الخدمات والباقات بسهولة.
-                        </p>
-
-                    </details>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================= CTA ================= -->
-
-        <section class="section">
-
-            <div class="container">
-
-                <div class="final-cta">
-
-                    <span>
-                        جاهز تبدأ؟
-                    </span>
-
-                    <h2>
-                        أول خطوة تبدأ بكلمة.
-                    </h2>
-
-                    <p>
-                        للتواصل والاستفسار عن الجلسات والمواعيد.
-                    </p>
-
-                    <a
-                        href="tel:01000297411"
-                        class="btn"
-                    >
-                        01000297411
-                    </a>
-
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
-
-
-    <!-- ================= FOOTER ================= -->
-
-    <footer id="contact">
-
-        <div class="container footer-grid">
-
-            <div>
-
-                <div class="footer-brand">
-
-                    <img
-                        src="assets/logo.png"
-                        alt="شعار د. إسلام قدري"
-                    >
-
-                    <div>
-
-                        <strong>
-                            د. إسلام قدري
-                        </strong>
-
-                        <span>
-                            الصحة النفسية والإرشاد الأسري
-                        </span>
-
-                    </div>
-
-                </div>
-
-                <p class="footer-description">
-                    الموقع التعريفي الرسمي لد. إسلام قدري.
+                <p data-i18n="aboutIntro">
+                    نبذة تعريفية عن الدكتور ومجالات عمله والمؤهلات المهنية.
                 </p>
 
             </div>
 
 
-            <div>
+            <div class="about-grid">
 
-                <h3>
-                    تواصل
-                </h3>
+                <article class="card">
 
-                <a href="tel:01000297411">
-                    01000297411
+                    <span class="number">01</span>
+
+                    <h3 data-i18n="aboutCardTitle">
+                        نبذة مهنية
+                    </h3>
+
+                    <p data-i18n="aboutCardText">
+                        د. إسلام قدري إسماعيل يعمل في مجال الصحة النفسية
+                        والإرشاد الأسري، ويقدم محتوى واستشارات في عدد من
+                        المجالات النفسية والأسرية.
+                    </p>
+
+                    <div class="facts">
+
+                        <div class="fact">
+                            <span data-i18n="factName">الاسم</span>
+                            <strong>إسلام قدري إسماعيل</strong>
+                        </div>
+
+                        <div class="fact">
+                            <span data-i18n="factField">المجال</span>
+                            <strong data-i18n="doctorField">
+                                الصحة النفسية والإرشاد الأسري
+                            </strong>
+                        </div>
+
+                        <div class="fact">
+                            <span data-i18n="factSpecialty">
+                                التخصصات
+                            </span>
+
+                            <strong data-i18n="factSpecialtyValue">
+                                المشكلات والاضطرابات النفسية واضطرابات الشخصية
+                            </strong>
+                        </div>
+
+                        <div class="fact">
+                            <span data-i18n="factPhone">
+                                الهاتف
+                            </span>
+
+                            <strong>
+                                01000297411
+                            </strong>
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <article class="card credentials">
+
+                    <span class="number">02</span>
+
+                    <h3 data-i18n="credentialsTitle">
+                        المؤهلات
+                    </h3>
+
+                    <div class="credential-row">
+
+                        <div class="check">✓</div>
+
+                        <div>
+                            <h4>
+                                Professional Master
+                            </h4>
+
+                            <p>
+                                Mental Health and Family Counseling
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="credential-row">
+
+                        <div class="check">✓</div>
+
+                        <div>
+                            <h4>
+                                Professional Doctorate
+                            </h4>
+
+                            <p>
+                                Mental Health and Family Counseling
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="credential-row">
+
+                        <div class="check">✓</div>
+
+                        <div>
+                            <h4>
+                                British Board
+                            </h4>
+
+                            <p data-i18n="britishBoard">
+                                Certificate of Excellence in Professional Study
+                            </p>
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- MESSAGE -->
+    <section class="message-section">
+
+        <div class="container">
+
+            <div class="message-box">
+
+                <span data-i18n="messageSmall">
+                    أحيانًا الكلام هو أول خطوة
+                </span>
+
+                <h2 data-i18n="messageTitle">
+                    مش كل وجع بيبان... ومش كل حاجة تقدر تحكيها لأي حد.
+                </h2>
+
+                <p data-i18n="messageText">
+                    خُد وقتك، افهم اللي جواك، وابدأ خطوة جديدة في مساحة
+                    قائمة على الاستماع والخصوصية.
+                </p>
+
+                <a
+                    class="btn"
+                    href="tel:01000297411"
+                    data-i18n="startContact"
+                >
+                    ابدأ التواصل
                 </a>
 
-                <div class="socials">
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- SERVICES -->
+    <section class="section" id="services">
+
+        <div class="container">
+
+            <div class="section-heading">
+
+                <span>SERVICES</span>
+
+                <h2 data-i18n="servicesTitle">
+                    المجالات والاستشارات
+                </h2>
+
+                <p data-i18n="servicesIntro">
+                    مجالات قابلة للتعديل والاعتماد النهائي قبل إطلاق الموقع.
+                </p>
+
+            </div>
+
+
+            <div class="services-grid">
+
+                <article class="service-card">
+
+                    <div class="service-icon">🧠</div>
+
+                    <h3 data-i18n="service1Title">
+                        الصحة النفسية
+                    </h3>
+
+                    <p data-i18n="service1Text">
+                        دعم واستشارات في مجالات الصحة النفسية والمشكلات الانفعالية.
+                    </p>
+
+                </article>
+
+
+                <article class="service-card">
+
+                    <div class="service-icon">◉</div>
+
+                    <h3 data-i18n="service2Title">
+                        الاضطرابات النفسية
+                    </h3>
+
+                    <p data-i18n="service2Text">
+                        قسم مخصص للتعريف بالمشكلات والاضطرابات التي يحددها الدكتور.
+                    </p>
+
+                </article>
+
+
+                <article class="service-card">
+
+                    <div class="service-icon">◎</div>
+
+                    <h3 data-i18n="service3Title">
+                        اضطرابات الشخصية
+                    </h3>
+
+                    <p data-i18n="service3Text">
+                        محتوى تعريفي حول اضطرابات الشخصية ومجالات التعامل معها.
+                    </p>
+
+                </article>
+
+
+                <article class="service-card">
+
+                    <div class="service-icon">♧</div>
+
+                    <h3 data-i18n="service4Title">
+                        الإرشاد الأسري
+                    </h3>
+
+                    <p data-i18n="service4Text">
+                        استشارات ومحتوى متعلق بالعلاقات والتواصل والمشكلات الأسرية.
+                    </p>
+
+                </article>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PACKAGES -->
+    <section class="section" id="packages">
+
+        <div class="container">
+
+            <div class="section-heading">
+
+                <span>PACKAGES</span>
+
+                <h2 data-i18n="packagesTitle">
+                    الجلسات والباقات
+                </h2>
+
+                <p data-i18n="packagesIntro">
+                    الأسعار حاليًا 0 جنيه كقيم مؤقتة حتى يتم تعديلها.
+                </p>
+
+            </div>
+
+
+            <div class="packages-grid">
+
+                <article class="package-card">
+
+                    <div
+                        class="package-label"
+                        data-i18n="sessionLabel"
+                    >
+                        جلسة
+                    </div>
+
+                    <div class="price">
+                        <strong>0</strong>
+                        <small data-i18n="currency">
+                            جنيه
+                        </small>
+                    </div>
+
+                    <h3 data-i18n="package1Title">
+                        جلسة فردية
+                    </h3>
+
+                    <p data-i18n="package1Text">
+                        جلسة استشارية فردية.
+                    </p>
+
+                    <ul>
+                        <li data-i18n="package1Li1">
+                            جلسة فردية
+                        </li>
+
+                        <li data-i18n="package1Li2">
+                            التفاصيل تحدد لاحقًا
+                        </li>
+
+                        <li data-i18n="package1Li3">
+                            الحجز عبر الهاتف
+                        </li>
+                    </ul>
 
                     <a
-                        href="https://www.tiktok.com/@islamqadry7"
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        class="btn full"
+                        href="tel:01000297411"
+                        data-i18n="bookNow"
                     >
-                        TikTok
+                        احجز الآن
                     </a>
 
-                    <a
-                        href="https://www.facebook.com/share/1KWLuU55BT/?mibextid=wwXIfr"
-                        target="_blank"
-                        rel="noopener noreferrer"
+                </article>
+
+
+                <article class="package-card featured">
+
+                    <span
+                        class="popular"
+                        data-i18n="popular"
                     >
-                        Facebook
-                    </a>
+                        الأكثر طلبًا
+                    </span>
+
+                    <div
+                        class="package-label"
+                        data-i18n="packageLabel"
+                    >
+                        باقة
+                    </div>
+
+                    <div class="price">
+                        <strong>0</strong>
+
+                        <small data-i18n="currency">
+                            جنيه
+                        </small>
+                    </div>
+
+                    <h3 data-i18n="package2Title">
+                        باقة 4 جلسات
+                    </h3>
+
+                    <p data-i18n="package2Text">
+                        باقة قابلة للتعديل حسب نظام الدكتور.
+                    </p>
+
+                    <ul>
+
+                        <li data-i18n="package2Li1">
+                            4 جلسات
+                        </li>
+
+                        <li data-i18n="package2Li2">
+                            تفاصيل الباقة تحدد لاحقًا
+                        </li>
+
+                        <li data-i18n="package2Li3">
+                            السعر قابل للتعديل
+                        </li>
+
+                    </ul>
 
                     <a
-                        href="https://www.instagram.com/islamqadryslm"
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        class="btn full"
+                        href="tel:01000297411"
+                        data-i18n="askPackage"
                     >
-                        Instagram
+                        استفسر عن الباقة
                     </a>
+
+                </article>
+
+
+                <article class="package-card">
+
+                    <div
+                        class="package-label"
+                        data-i18n="customLabel"
+                    >
+                        مخصصة
+                    </div>
+
+                    <div class="price">
+
+                        <strong>0</strong>
+
+                        <small data-i18n="currency">
+                            جنيه
+                        </small>
+
+                    </div>
+
+                    <h3 data-i18n="package3Title">
+                        باقة مخصصة
+                    </h3>
+
+                    <p data-i18n="package3Text">
+                        يتم تحديد محتوى الباقة والسعر لاحقًا.
+                    </p>
+
+                    <ul>
+
+                        <li data-i18n="package3Li1">
+                            خدمة قابلة للتخصيص
+                        </li>
+
+                        <li data-i18n="package3Li2">
+                            تفاصيل تحدد لاحقًا
+                        </li>
+
+                        <li data-i18n="package3Li3">
+                            السعر قابل للتعديل
+                        </li>
+
+                    </ul>
+
+                    <a
+                        class="btn full"
+                        href="tel:01000297411"
+                        data-i18n="contactNow"
+                    >
+                        تواصل الآن
+                    </a>
+
+                </article>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- GALLERY -->
+    <section class="section" id="gallery">
+
+        <div class="container">
+
+            <div class="section-heading">
+
+                <span>GALLERY</span>
+
+                <h2 data-i18n="galleryTitle">
+                    معرض الصور
+                </h2>
+
+                <p data-i18n="galleryIntro">
+                    الأماكن جاهزة لإضافة صور الدكتور والعيادة والشهادات لاحقًا.
+                </p>
+
+            </div>
+
+
+            <div class="gallery-shell">
+
+                <button
+                    class="slider-btn"
+                    id="galleryPrev"
+                    type="button"
+                    aria-label="Previous"
+                >
+                    ‹
+                </button>
+
+                <div
+                    class="gallery-track"
+                    id="galleryTrack"
+                >
+
+                    <div class="gallery-placeholder">
+                        <span>01</span>
+                        <b data-i18n="gallery1">
+                            صورة الدكتور
+                        </b>
+                        <small data-i18n="addLater">
+                            ستضاف لاحقًا
+                        </small>
+                    </div>
+
+                    <div class="gallery-placeholder">
+                        <span>02</span>
+                        <b data-i18n="gallery2">
+                            صورة من العيادة
+                        </b>
+                        <small data-i18n="addLater">
+                            ستضاف لاحقًا
+                        </small>
+                    </div>
+
+                    <div class="gallery-placeholder">
+                        <span>03</span>
+                        <b data-i18n="gallery3">
+                            الشهادات
+                        </b>
+                        <small data-i18n="addLater">
+                            ستضاف لاحقًا
+                        </small>
+                    </div>
+
+                    <div class="gallery-placeholder">
+                        <span>04</span>
+                        <b data-i18n="gallery4">
+                            صورة إضافية
+                        </b>
+                        <small data-i18n="addLater">
+                            ستضاف لاحقًا
+                        </small>
+                    </div>
+
+                </div>
+
+                <button
+                    class="slider-btn"
+                    id="galleryNext"
+                    type="button"
+                    aria-label="Next"
+                >
+                    ›
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- VIDEOS -->
+    <section class="section" id="videos">
+
+        <div class="container">
+
+            <div class="section-heading">
+
+                <span>VIDEOS</span>
+
+                <h2 data-i18n="videosTitle">
+                    فيديوهات الدكتور
+                </h2>
+
+                <p data-i18n="videosIntro">
+                    أماكن جاهزة لإضافة فيديوهات الدكتور لاحقًا.
+                </p>
+
+            </div>
+
+
+            <div class="videos-grid">
+
+                <div class="video-placeholder">
+                    <div class="play">▶</div>
+                    <span data-i18n="video1">
+                        فيديو 01
+                    </span>
+                </div>
+
+                <div class="video-placeholder">
+                    <div class="play">▶</div>
+                    <span data-i18n="video2">
+                        فيديو 02
+                    </span>
+                </div>
+
+                <div class="video-placeholder">
+                    <div class="play">▶</div>
+                    <span data-i18n="video3">
+                        فيديو 03
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FAQ -->
+    <section class="section faq-section">
+
+        <div class="container">
+
+            <div class="section-heading">
+
+                <span>FAQ</span>
+
+                <h2 data-i18n="faqTitle">
+                    الأسئلة الشائعة
+                </h2>
+
+                <p data-i18n="faqIntro">
+                    إجابات مبدئية يمكن تحديثها بعد تحديد نظام الحجز والأسعار.
+                </p>
+
+            </div>
+
+
+            <div class="faq">
+
+                <details>
+
+                    <summary data-i18n="faq1Question">
+                        كيف يمكن حجز جلسة؟
+                    </summary>
+
+                    <p data-i18n="faq1Answer">
+                        يمكنك التواصل مباشرة عبر الرقم 01000297411 لمعرفة
+                        المواعيد والتفاصيل.
+                    </p>
+
+                </details>
+
+
+                <details>
+
+                    <summary data-i18n="faq2Question">
+                        ما أسعار الجلسات؟
+                    </summary>
+
+                    <p data-i18n="faq2Answer">
+                        الأسعار الحالية مؤقتة وستتم إضافتها وتحديثها
+                        قبل إطلاق الموقع بشكل نهائي.
+                    </p>
+
+                </details>
+
+
+                <details>
+
+                    <summary data-i18n="faq3Question">
+                        هل توجد جلسات أونلاين؟
+                    </summary>
+
+                    <p data-i18n="faq3Answer">
+                        سيتم توضيح نوع الجلسات المتاحة وطريقة تقديمها
+                        بعد اعتماد نظام الحجز النهائي.
+                    </p>
+
+                </details>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CTA -->
+    <section class="section">
+
+        <div class="container">
+
+            <div class="final-cta">
+
+                <span data-i18n="ctaSmall">
+                    جاهز تبدأ؟
+                </span>
+
+                <h2 data-i18n="ctaTitle">
+                    أول خطوة تبدأ بكلمة.
+                </h2>
+
+                <p data-i18n="ctaText">
+                    للتواصل والاستفسار عن الجلسات والمواعيد.
+                </p>
+
+                <a
+                    class="btn"
+                    href="tel:01000297411"
+                    data-i18n="contactNow"
+                >
+                    تواصل الآن
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- FOOTER -->
+<footer id="contact">
+
+    <div class="container footer-grid">
+
+        <div>
+
+            <div class="footer-brand">
+
+                <img
+                    src="assets/logo.png"
+                    alt="شعار د. إسلام قدري"
+                >
+
+                <div>
+
+                    <strong data-i18n="doctorName">
+                        د. إسلام قدري
+                    </strong>
+
+                    <span data-i18n="doctorField">
+                        الصحة النفسية والإرشاد الأسري
+                    </span>
 
                 </div>
 
             </div>
 
+            <p
+                class="footer-description"
+                data-i18n="footerDescription"
+            >
+                الموقع التعريفي الرسمي لد. إسلام قدري.
+            </p>
 
-            <div>
+        </div>
 
-                <h3>
-                    روابط سريعة
-                </h3>
 
-                <a href="#about">عن الدكتور</a>
+        <div>
 
-                <a href="#services">المجالات</a>
+            <h3 data-i18n="contactTitle">
+                تواصل
+            </h3>
 
-                <a href="#packages">الباقات</a>
+            <a
+                class="phone-link"
+                href="tel:01000297411"
+            >
+                01000297411
+            </a>
 
-                <a href="#gallery">الصور</a>
 
-                <a href="#videos">الفيديوهات</a>
+            <div class="socials">
+
+                <a
+                    href="https://www.facebook.com/share/1KWLuU55BT/?mibextid=wwXIfr"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Facebook"
+                >
+                    <svg viewBox="0 0 24 24">
+                        <path d="M14 8h3V4h-3c-3.3 0-5 1.9-5 5v3H6v4h3v6h4v-6h3.5l.5-4H13V9c0-.7.3-1 1-1z"/>
+                    </svg>
+
+                    <span>Facebook</span>
+                </a>
+
+
+                <a
+                    href="https://www.instagram.com/islamqadryslm"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram"
+                >
+                    <svg viewBox="0 0 24 24">
+                        <rect x="3" y="3" width="18" height="18" rx="5"/>
+                        <circle cx="12" cy="12" r="4"/>
+                        <circle cx="17.5" cy="6.5" r="1"/>
+                    </svg>
+
+                    <span>Instagram</span>
+                </a>
+
+
+                <a
+                    href="https://wa.me/201000297411"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="WhatsApp"
+                >
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.6 0 .3 5.3.3 11.8c0 2.1.5 4.1 1.6 5.9L.2 24l6.5-1.7c1.7.9 3.5 1.3 5.4 1.3h.1c6.5 0 11.8-5.3 11.8-11.8 0-3.2-1.2-6.1-3.5-8.3z"/>
+                    </svg>
+
+                    <span>WhatsApp</span>
+                </a>
+
+
+                <a
+                    href="https://www.tiktok.com/@islamqadry7"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="TikTok"
+                >
+                    <svg viewBox="0 0 24 24">
+                        <path d="M15 3c.5 2.7 2 4.2 4.7 4.4v3.3c-1.7-.1-3.2-.6-4.6-1.5v6.4c0 4.1-2.8 6.4-6.3 6.4A5.8 5.8 0 0 1 3 16.2c0-3.6 2.9-6.2 6.4-6.2.4 0 .8 0 1.2.1v3.4a3.4 3.4 0 0 0-1.2-.2c-1.6 0-2.9 1.1-2.9 2.8 0 1.7 1.3 2.7 2.8 2.7 1.9 0 2.9-1.2 2.9-3.4V3H15z"/>
+                    </svg>
+
+                    <span>TikTok</span>
+                </a>
 
             </div>
 
         </div>
 
 
-        <div class="copyright">
+        <div>
 
-            © 2026 د. إسلام قدري — جميع الحقوق محفوظة
+            <h3 data-i18n="quickLinks">
+                روابط سريعة
+            </h3>
+
+            <a href="#about" data-i18n="navAbout">
+                عن الدكتور
+            </a>
+
+            <a href="#services" data-i18n="navServices">
+                المجالات
+            </a>
+
+            <a href="#packages" data-i18n="navPackages">
+                الباقات
+            </a>
+
+            <a href="#gallery" data-i18n="navGallery">
+                الصور
+            </a>
+
+            <a href="#videos" data-i18n="navVideos">
+                الفيديوهات
+            </a>
 
         </div>
 
-    </footer>
+    </div>
 
 
-    <!-- JavaScript -->
-    <script src="js/script.js"></script>
+    <div class="copyright">
+
+        © <span id="year"></span>
+
+        <span data-i18n="doctorName">
+            د. إسلام قدري
+        </span>
+
+        —
+
+        <span data-i18n="rights">
+            جميع الحقوق محفوظة
+        </span>
+
+    </div>
+
+</footer>
+
+
+<script src="js/script.js"></script>
 
 </body>
 </html>
