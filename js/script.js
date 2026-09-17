@@ -1,651 +1,594 @@
-"use strict";
+(() => {
+    "use strict";
 
-/* =========================================================
-   ELEMENTS
-========================================================= */
+    /* =========================================================
+       DOM
+    ========================================================= */
 
-const html = document.documentElement;
-const body = document.body;
+    const html = document.documentElement;
+    const body = document.body;
 
-const themeToggle = document.getElementById("themeToggle");
-const themeIcon = document.getElementById("themeIcon");
+    const header = document.getElementById("header");
+    const mobileMenu = document.getElementById("mobileMenu");
+    const mobileMenuButton = document.getElementById("mobileMenuButton");
 
-const languageToggle = document.getElementById("languageToggle");
+    const themeButtons = [
+        document.getElementById("themeToggle"),
+        document.getElementById("mobileThemeToggle")
+    ].filter(Boolean);
 
-const mobileMenuButton = document.getElementById("mobileMenuButton");
-const mobileMenu = document.getElementById("mobileMenu");
+    const languageButtons = [
+        document.getElementById("languageToggle"),
+        document.getElementById("mobileLanguageToggle")
+    ].filter(Boolean);
 
-const header = document.getElementById("header");
+    const prefersReducedMotion = window.matchMedia?.(
+        "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    const isMobile = () => window.innerWidth <= 760;
 
 
-/* =========================================================
-   THEME + LIGHTWEIGHT WALKING ANIMATION
-========================================================= */
+    /* =========================================================
+       STATE
+    ========================================================= */
 
-const savedTheme = localStorage.getItem("site-theme") === "light"
-    ? "light"
-    : "dark";
+    let theme =
+        localStorage.getItem("site-theme") === "light"
+            ? "light"
+            : "dark";
 
-let currentTheme = savedTheme;
-let themeAnimationTimer = null;
-let themeAnimationRunning = false;
+    let language =
+        localStorage.getItem("site-language") === "en"
+            ? "en"
+            : "ar";
 
-function setTheme(theme) {
-    currentTheme = theme;
+    let themeScene = null;
+    let themeTimer = null;
+    let themeCloseTimer = null;
+    let themeBusy = false;
 
-    html.setAttribute("data-theme", theme);
-    localStorage.setItem("site-theme", theme);
+    let scrollTicking = false;
 
-    const icon = theme === "light" ? "☀" : "☾";
 
-    if (themeIcon) {
-        themeIcon.textContent = icon;
+    /* =========================================================
+       THEME
+    ========================================================= */
+
+    function updateThemeIcons() {
+        const icon = theme === "light" ? "☀" : "☾";
+
+        document
+            .querySelectorAll("#themeIcon, #mobileThemeIcon")
+            .forEach((element) => {
+                element.textContent = icon;
+            });
     }
 
-    const mobileIcon = document.getElementById("mobileThemeIcon");
 
-    if (mobileIcon) {
-        mobileIcon.textContent = icon;
-    }
-}
+    function applyTheme(value) {
+        theme = value;
 
-setTheme(savedTheme);
+        html.dataset.theme = value;
 
+        localStorage.setItem("site-theme", value);
 
-function createThemeScene() {
-
-    if (document.getElementById("themeSwitchScene")) {
-        return document.getElementById("themeSwitchScene");
+        updateThemeIcons();
     }
 
-    const scene = document.createElement("div");
 
-    scene.id = "themeSwitchScene";
-    scene.className = "theme-switch-scene";
+    /* =========================================================
+       THEME ANIMATION SCENE
+    ========================================================= */
 
-    scene.setAttribute(
-        "aria-hidden",
-        "true"
-    );
+    function createThemeScene() {
+        if (themeScene) {
+            return themeScene;
+        }
 
-    scene.innerHTML = `
-        <div class="theme-switch-card">
+        themeScene = document.createElement("div");
 
-            <div class="theme-switch-sky"></div>
+        themeScene.className = "theme-switch-scene";
 
-            <div class="theme-switch-sun"></div>
+        themeScene.setAttribute("aria-hidden", "true");
 
-            <div class="theme-switch-ground"></div>
+        themeScene.innerHTML = `
+            <div class="theme-switch-track"></div>
 
             <div class="theme-switch-hole">
                 <span></span>
             </div>
 
-            <div class="theme-switch-target"></div>
-
-            <div
-                class="theme-switch-person"
-                aria-hidden="true"
-            >
+            <span class="theme-switch-person">
                 <i class="head"></i>
                 <i class="body"></i>
+
                 <i class="arm arm-left"></i>
                 <i class="arm arm-right"></i>
+
                 <i class="leg leg-left"></i>
                 <i class="leg leg-right"></i>
-            </div>
+            </span>
+        `;
 
-        </div>
-    `;
+        body.appendChild(themeScene);
 
-    document.body.appendChild(scene);
-
-    return scene;
-}
-
-
-function positionThemeScene(button, scene) {
-
-    if (!button || !scene) {
-        return;
-    }
-
-    const rect =
-        button.getBoundingClientRect();
-
-    const mobile =
-        window.innerWidth <= 760;
-
-    const width =
-        mobile ? 230 : 270;
-
-    const height =
-        mobile ? 132 : 150;
-
-    let left =
-        rect.left +
-        (rect.width / 2) -
-        (width / 2);
-
-    let top =
-        rect.bottom + 10;
-
-    if (
-        top + height >
-        window.innerHeight - 8
-    ) {
-        top =
-            rect.top -
-            height -
-            10;
-    }
-
-    left =
-        Math.max(
-            8,
-            Math.min(
-                left,
-                window.innerWidth -
-                width -
-                8
-            )
-        );
-
-    top =
-        Math.max(
-            8,
-            Math.min(
-                top,
-                window.innerHeight -
-                height -
-                8
-            )
-        );
-
-    scene.style.left =
-        `${left}px`;
-
-    scene.style.top =
-        `${top}px`;
-}
-
-
-function runThemeAnimation(button) {
-
-    if (
-        themeAnimationRunning ||
-        !button
-    ) {
-        return;
-    }
-
-    const scene =
-        createThemeScene();
-
-    const goingDark =
-        currentTheme === "light";
-
-    const nextTheme =
-        goingDark
-            ? "dark"
-            : "light";
-
-    themeAnimationRunning = true;
-
-    button.disabled = true;
-
-    scene.className =
-        "theme-switch-scene";
-
-    scene.classList.add(
-        goingDark
-            ? "to-dark"
-            : "to-light"
-    );
-
-    if (!goingDark) {
-        scene.classList.add(
-            "light-stage"
-        );
-    }
-
-    positionThemeScene(
-        button,
-        scene
-    );
-
-    void scene.offsetWidth;
-
-    scene.classList.add(
-        "is-visible"
-    );
-
-    if (themeAnimationTimer) {
-        clearTimeout(
-            themeAnimationTimer
-        );
+        return themeScene;
     }
 
 
-    /*
-        Light → Dark:
-        الشخص يقع في الحفرة
-        وبعدها الوضع يتحول إلى Dark.
-
-        Dark → Light:
-        الشخص يطلع من الحفرة
-        ويمشي للزر
-        وبعدها الوضع يتحول إلى Light.
-    */
-
-    themeAnimationTimer =
-        setTimeout(
-            function () {
-
-                setTheme(
-                    nextTheme
-                );
-
-            },
-            goingDark
-                ? 930
-                : 1060
-        );
-
-
-    themeAnimationTimer =
-        setTimeout(
-            function () {
-
-                scene.classList.remove(
-                    "is-visible",
-                    "to-dark",
-                    "to-light",
-                    "light-stage"
-                );
-
-                scene.setAttribute(
-                    "aria-hidden",
-                    "true"
-                );
-
-                button.disabled =
-                    false;
-
-                themeAnimationRunning =
-                    false;
-
-            },
-            goingDark
-                ? 1180
-                : 1260
-        );
-}
-
-
-function bindThemeButton(button) {
-
-    if (!button) {
-        return;
-    }
-
-    button.addEventListener(
-        "click",
-        function () {
-
-            runThemeAnimation(
-                button
+    function getActiveThemeButton() {
+        if (isMobile()) {
+            return (
+                document.getElementById("mobileThemeToggle") ||
+                document.getElementById("themeToggle")
             );
-
         }
-    );
-}
+
+        return (
+            document.getElementById("themeToggle") ||
+            document.getElementById("mobileThemeToggle")
+        );
+    }
 
 
-bindThemeButton(
-    themeToggle
-);
-
-bindThemeButton(
-    document.getElementById(
-        "mobileThemeToggle"
-    )
-);
-
-
-window.addEventListener(
-    "resize",
-    function () {
-
-        if (!themeAnimationRunning) {
+    function positionThemeScene(button) {
+        if (!button || !themeScene) {
             return;
         }
 
-        const scene =
-            document.getElementById(
-                "themeSwitchScene"
+        const rect = button.getBoundingClientRect();
+
+        const mobile = isMobile();
+
+        const width = mobile ? 148 : 164;
+        const height = mobile ? 52 : 58;
+
+        /*
+         * بداية المشهد من نفس مكان زر تغيير الوضع
+         * عشان الشخصية تبان وكأنها خارجة من الزر نفسه.
+         */
+
+        let left = rect.left;
+        let top =
+            rect.top +
+            rect.height / 2 -
+            height / 2;
+
+        /*
+         * منع خروج الأنيميشن من الشاشة
+         */
+
+        left = Math.max(
+            4,
+            Math.min(
+                left,
+                window.innerWidth - width - 4
+            )
+        );
+
+        top = Math.max(
+            4,
+            Math.min(
+                top,
+                window.innerHeight - height - 4
+            )
+        );
+
+        themeScene.style.left = `${left}px`;
+        themeScene.style.top = `${top}px`;
+
+        themeScene.style.width = `${width}px`;
+        themeScene.style.height = `${height}px`;
+    }
+
+
+    function clearThemeTimers() {
+        if (themeTimer) {
+            clearTimeout(themeTimer);
+            themeTimer = null;
+        }
+
+        if (themeCloseTimer) {
+            clearTimeout(themeCloseTimer);
+            themeCloseTimer = null;
+        }
+    }
+
+
+    function closeThemeScene() {
+        clearThemeTimers();
+
+        if (themeScene) {
+            themeScene.className = "theme-switch-scene";
+            themeScene.setAttribute("aria-hidden", "true");
+        }
+
+        themeButtons.forEach((button) => {
+            button.disabled = false;
+            button.removeAttribute("aria-busy");
+            button.classList.remove("theme-animating");
+        });
+
+        themeBusy = false;
+    }
+
+
+    function toggleTheme(button) {
+        if (!button || themeBusy) {
+            return;
+        }
+
+        const nextTheme =
+            theme === "light"
+                ? "dark"
+                : "light";
+
+
+        /* -----------------------------------------
+           Reduced Motion
+        ----------------------------------------- */
+
+        if (prefersReducedMotion) {
+            applyTheme(nextTheme);
+            return;
+        }
+
+
+        themeBusy = true;
+
+        clearThemeTimers();
+
+
+        /*
+         * تعطيل الأزرار أثناء الحركة
+         * لمنع الضغط المتكرر.
+         */
+
+        themeButtons.forEach((item) => {
+            item.disabled = true;
+
+            item.setAttribute(
+                "aria-busy",
+                "true"
             );
 
-        const activeButton =
-            window.innerWidth <= 760
-                ? document.getElementById(
-                    "mobileThemeToggle"
-                )
-                : themeToggle;
+            item.classList.add(
+                "theme-animating"
+            );
+        });
 
-        positionThemeScene(
-            activeButton,
-            scene
+
+        const scene = createThemeScene();
+
+
+        /*
+         * DARK:
+         * الشخصية تبدأ من الزر وتمشي ناحية الحفرة
+         *
+         * LIGHT:
+         * الشخصية تظهر من الحفرة وتمشي ناحية الزر
+         */
+
+        const animationClass =
+            nextTheme === "dark"
+                ? "to-dark"
+                : "to-light";
+
+
+        scene.className =
+            `theme-switch-scene ${animationClass}`;
+
+
+        scene.setAttribute(
+            "aria-hidden",
+            "false"
         );
 
-    },
-    {
-        passive: true
+
+        positionThemeScene(button);
+
+
+        /*
+         * إجبار المتصفح على رسم الوضع الأول
+         * قبل تشغيل الحركة.
+         */
+
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                scene.classList.add("is-visible");
+            });
+        });
+
+
+        /* -----------------------------------------
+           توقيت تغيير الوضع
+        ----------------------------------------- */
+
+        const themeChangeDelay =
+            nextTheme === "dark"
+                ? 720
+                : 830;
+
+
+        themeTimer = window.setTimeout(() => {
+            applyTheme(nextTheme);
+        }, themeChangeDelay);
+
+
+        /* -----------------------------------------
+           إنهاء المشهد
+        ----------------------------------------- */
+
+        const closeDelay =
+            nextTheme === "dark"
+                ? 960
+                : 1080;
+
+
+        themeCloseTimer = window.setTimeout(() => {
+            closeThemeScene();
+        }, closeDelay);
     }
-);
 
 
-/* =========================================================
-   LANGUAGE
-========================================================= */
+    /* =========================================================
+       LANGUAGE
+    ========================================================= */
 
-let currentLanguage =
-    localStorage.getItem(
-        "site-language"
-    ) || "ar";
+    function applyLanguage(value) {
+        language = value;
 
-
-function updateLanguage(language) {
-
-    currentLanguage =
-        language;
-
-    const isArabic =
-        language === "ar";
+        const arabic = value === "ar";
 
 
-    html.setAttribute(
-        "lang",
-        isArabic
+        html.lang = arabic
             ? "ar"
-            : "en"
-    );
+            : "en";
 
-    html.setAttribute(
-        "dir",
-        isArabic
+        html.dir = arabic
             ? "rtl"
-            : "ltr"
-    );
+            : "ltr";
 
 
-    const elements =
-        document.querySelectorAll(
-            "[data-ar][data-en]"
-        );
+        /*
+         * تغيير كل العناصر التي تحتوي
+         * data-ar / data-en
+         */
+
+        document
+            .querySelectorAll("[data-ar][data-en]")
+            .forEach((element) => {
+                element.textContent = arabic
+                    ? element.dataset.ar
+                    : element.dataset.en;
+            });
 
 
-    elements.forEach(
-        function (element) {
+        /*
+         * تحديث زر اللغة
+         */
 
-            const text =
-                isArabic
-                    ? element.getAttribute(
-                        "data-ar"
-                    )
-                    : element.getAttribute(
-                        "data-en"
-                    );
-
-            if (text !== null) {
-
-                element.textContent =
-                    text;
-
-            }
-
-        }
-    );
-
-
-    const languageButtons = [
-        languageToggle,
-        document.getElementById(
-            "mobileLanguageToggle"
-        )
-    ].filter(Boolean);
-
-
-    languageButtons.forEach(
-        function (button) {
-
-            button.textContent =
-                isArabic
-                    ? "EN"
-                    : "AR";
+        languageButtons.forEach((button) => {
+            button.textContent = arabic
+                ? "EN"
+                : "AR";
 
             button.setAttribute(
                 "aria-label",
-                isArabic
+                arabic
                     ? "Switch to English"
                     : "التبديل إلى العربية"
             );
-
-        }
-    );
+        });
 
 
-    localStorage.setItem(
-        "site-language",
-        language
-    );
-}
-
-
-updateLanguage(
-    currentLanguage
-);
-
-
-const languageButtons = [
-    languageToggle,
-    document.getElementById(
-        "mobileLanguageToggle"
-    )
-].filter(Boolean);
-
-
-languageButtons.forEach(
-    function (button) {
-
-        button.addEventListener(
-            "click",
-            function () {
-
-                const newLanguage =
-                    currentLanguage === "ar"
-                        ? "en"
-                        : "ar";
-
-                updateLanguage(
-                    newLanguage
-                );
-
-            }
+        localStorage.setItem(
+            "site-language",
+            value
         );
-
     }
-);
 
 
-/* =========================================================
-   MOBILE MENU
-========================================================= */
+    /* =========================================================
+       HEADER
+    ========================================================= */
 
-if (
-    mobileMenuButton &&
-    mobileMenu
-) {
-
-    mobileMenuButton.addEventListener(
-        "click",
-        function () {
-
-            mobileMenu.classList.toggle(
-                "active"
-            );
-
+    function updateHeader() {
+        if (!header) {
+            return;
         }
-    );
+
+        const shouldScroll =
+            window.scrollY > 18;
+
+        header.classList.toggle(
+            "scrolled",
+            shouldScroll
+        );
+    }
 
 
-    const mobileLinks =
-        mobileMenu.querySelectorAll(
-            "a"
+    function requestHeaderUpdate() {
+        if (scrollTicking) {
+            return;
+        }
+
+        scrollTicking = true;
+
+        window.requestAnimationFrame(() => {
+            updateHeader();
+
+            scrollTicking = false;
+        });
+    }
+
+
+    /* =========================================================
+       MOBILE MENU
+    ========================================================= */
+
+    function closeMobileMenu() {
+        if (!mobileMenu) {
+            return;
+        }
+
+        mobileMenu.classList.remove(
+            "active"
+        );
+
+        mobileMenuButton?.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+    }
+
+
+    function initMobileMenu() {
+        if (!mobileMenuButton || !mobileMenu) {
+            return;
+        }
+
+        mobileMenuButton.setAttribute(
+            "aria-expanded",
+            "false"
         );
 
 
-    mobileLinks.forEach(
-        function (link) {
-
-            link.addEventListener(
-                "click",
-                function () {
-
-                    mobileMenu.classList.remove(
+        mobileMenuButton.addEventListener(
+            "click",
+            () => {
+                const open =
+                    mobileMenu.classList.toggle(
                         "active"
                     );
 
-                }
-            );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   HEADER ON SCROLL
-========================================================= */
-
-function updateHeader() {
-
-    if (!header) {
-        return;
-    }
-
-    if (window.scrollY > 20) {
-
-        header.classList.add(
-            "scrolled"
+                mobileMenuButton.setAttribute(
+                    "aria-expanded",
+                    String(open)
+                );
+            }
         );
 
-    } else {
 
-        header.classList.remove(
-            "scrolled"
-        );
+        /*
+         * إغلاق القائمة بعد الضغط على أي رابط
+         */
 
+        mobileMenu
+            .querySelectorAll("a")
+            .forEach((link) => {
+                link.addEventListener(
+                    "click",
+                    closeMobileMenu
+                );
+            });
     }
 
-}
 
+    /* =========================================================
+       FAQ
+    ========================================================= */
 
-window.addEventListener(
-    "scroll",
-    updateHeader,
-    {
-        passive: true
-    }
-);
-
-updateHeader();
-
-
-/* =========================================================
-   FAQ
-========================================================= */
-
-const faqItems =
-    document.querySelectorAll(
-        ".faq-item"
-    );
-
-
-faqItems.forEach(
-    function (item) {
-
-        const question =
-            item.querySelector(
-                ".faq-question"
+    function initFAQ() {
+        const faqItems =
+            document.querySelectorAll(
+                ".faq-item"
             );
 
-        if (!question) {
+        if (!faqItems.length) {
             return;
         }
 
 
-        question.addEventListener(
-            "click",
-            function () {
+        faqItems.forEach((item) => {
+            const button =
+                item.querySelector(
+                    ".faq-question"
+                );
 
-                const wasActive =
-                    item.classList.contains(
-                        "active"
-                    );
+            if (!button) {
+                return;
+            }
 
 
-                faqItems.forEach(
-                    function (otherItem) {
-
-                        otherItem.classList.remove(
+            button.addEventListener(
+                "click",
+                () => {
+                    const isOpen =
+                        item.classList.contains(
                             "active"
                         );
 
+
+                    /*
+                     * إغلاق باقي الأسئلة
+                     */
+
+                    faqItems.forEach((other) => {
+                        if (other !== item) {
+                            other.classList.remove(
+                                "active"
+                            );
+                        }
+                    });
+
+
+                    /*
+                     * فتح السؤال الحالي
+                     */
+
+                    if (!isOpen) {
+                        item.classList.add(
+                            "active"
+                        );
                     }
-                );
-
-
-                if (!wasActive) {
-
-                    item.classList.add(
-                        "active"
-                    );
-
                 }
-
-            }
-        );
-
+            );
+        });
     }
-);
 
 
-/* =========================================================
-   SCROLL REVEAL
-========================================================= */
+    /* =========================================================
+       REVEAL ANIMATIONS
+       Performance friendly
+    ========================================================= */
 
-const revealElements =
-    document.querySelectorAll(
-        ".reveal"
-    );
+    function initReveal() {
+        const elements =
+            document.querySelectorAll(
+                ".reveal"
+            );
+
+        if (!elements.length) {
+            return;
+        }
 
 
-if (
-    "IntersectionObserver"
-    in window
-) {
+        /*
+         * لو الجهاز يفضل تقليل الحركة
+         * أو المتصفح لا يدعم IntersectionObserver
+         */
 
-    const revealObserver =
-        new IntersectionObserver(
-            function (
-                entries,
-                observer
-            ) {
+        if (
+            prefersReducedMotion ||
+            !("IntersectionObserver" in window)
+        ) {
+            elements.forEach((element) => {
+                element.classList.add(
+                    "visible"
+                );
+            });
 
-                entries.forEach(
-                    function (entry) {
+            return;
+        }
+
+
+        const observer =
+            new IntersectionObserver(
+                (entries, instance) => {
+
+                    entries.forEach((entry) => {
 
                         if (
                             !entry.isIntersecting
@@ -653,101 +596,220 @@ if (
                             return;
                         }
 
+
                         entry.target.classList.add(
                             "visible"
                         );
 
-                        observer.unobserve(
+
+                        instance.unobserve(
                             entry.target
                         );
+                    });
 
-                    }
-                );
+                },
+                {
+                    threshold: 0.08,
 
-            },
-            {
-                threshold: 0.08,
-                rootMargin:
-                    "0px 0px -30px 0px"
+                    rootMargin:
+                        "0px 0px -32px 0px"
+                }
+            );
+
+
+        elements.forEach((element) => {
+            observer.observe(element);
+        });
+    }
+
+
+    /* =========================================================
+       BACK TO TOP
+    ========================================================= */
+
+    function initBackToTop() {
+        const button =
+            document.querySelector(
+                ".back-to-top"
+            );
+
+        if (!button) {
+            return;
+        }
+
+
+        button.addEventListener(
+            "click",
+            (event) => {
+                event.preventDefault();
+
+                /*
+                 * Auto بدل smooth
+                 * عشان الموبايل مايحصلش فيه تقطيع.
+                 */
+
+                window.scrollTo({
+                    top: 0,
+                    left: 0,
+                    behavior: "auto"
+                });
+            }
+        );
+    }
+
+
+    /* =========================================================
+       THEME BUTTONS
+    ========================================================= */
+
+    themeButtons.forEach((button) => {
+
+        button.addEventListener(
+            "click",
+            () => {
+                toggleTheme(button);
             }
         );
 
+    });
 
-    revealElements.forEach(
-        function (element) {
 
-            revealObserver.observe(
-                element
-            );
+    /* =========================================================
+       LANGUAGE BUTTONS
+    ========================================================= */
+
+    languageButtons.forEach((button) => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                const nextLanguage =
+                    language === "ar"
+                        ? "en"
+                        : "ar";
+
+
+                applyLanguage(
+                    nextLanguage
+                );
+
+
+                /*
+                 * لو زر اللغة داخل القائمة
+                 * نقفل القائمة بعد التغيير.
+                 */
+
+                closeMobileMenu();
+            }
+        );
+
+    });
+
+
+    /* =========================================================
+       SCROLL
+       Passive + requestAnimationFrame
+       لتقليل الضغط على الموبايل
+    ========================================================= */
+
+    window.addEventListener(
+        "scroll",
+        requestHeaderUpdate,
+        {
+            passive: true
+        }
+    );
+
+
+    /* =========================================================
+       RESIZE
+    ========================================================= */
+
+    let resizeTimer = null;
+
+    window.addEventListener(
+        "resize",
+        () => {
+
+            if (resizeTimer) {
+                clearTimeout(
+                    resizeTimer
+                );
+            }
+
+
+            resizeTimer =
+                window.setTimeout(() => {
+
+                    if (themeBusy) {
+
+                        const button =
+                            getActiveThemeButton();
+
+                        positionThemeScene(
+                            button
+                        );
+                    }
+
+
+                    /*
+                     * إغلاق القائمة عند الانتقال
+                     * من الموبايل للديسكتوب.
+                     */
+
+                    if (
+                        window.innerWidth > 760
+                    ) {
+                        closeMobileMenu();
+                    }
+
+                }, 80);
+
+        },
+        {
+            passive: true
+        }
+    );
+
+
+    /* =========================================================
+       PAGE VISIBILITY
+       لو المستخدم خرج من التاب أثناء الأنيميشن
+       ننظف الحركة ونمنع أي حالة معلقة.
+    ========================================================= */
+
+    document.addEventListener(
+        "visibilitychange",
+        () => {
+
+            if (
+                document.hidden &&
+                themeBusy
+            ) {
+                closeThemeScene();
+            }
 
         }
     );
 
-} else {
 
-    revealElements.forEach(
-        function (element) {
+    /* =========================================================
+       INITIALIZE
+    ========================================================= */
 
-            element.classList.add(
-                "visible"
-            );
+    applyTheme(theme);
 
-        }
-    );
+    applyLanguage(language);
 
-}
+    updateHeader();
 
+    initMobileMenu();
 
-/* =========================================================
-   BACK TO TOP
-========================================================= */
+    initFAQ();
 
-const backToTop =
-    document.querySelector(
-        ".back-to-top"
-    );
+    initReveal();
 
+    initBackToTop();
 
-if (backToTop) {
-
-    backToTop.addEventListener(
-        "click",
-        function (event) {
-
-            event.preventDefault();
-
-            window.scrollTo({
-                top: 0,
-                behavior: "auto"
-            });
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   CLOSE MOBILE MENU WHEN RESIZING
-========================================================= */
-
-window.addEventListener(
-    "resize",
-    function () {
-
-        if (
-            window.innerWidth > 760 &&
-            mobileMenu
-        ) {
-
-            mobileMenu.classList.remove(
-                "active"
-            );
-
-        }
-
-    },
-    {
-        passive: true
-    }
-);
+})();
