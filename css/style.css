@@ -2456,3 +2456,61 @@ body {
         transition: none;
     }
 }
+
+
+/* =========================================================
+   MOBILE HEADER CONTROLS — CLEAN
+========================================================= */
+
+@media (max-width: 760px) {
+
+    .nav-container {
+        gap: 8px;
+    }
+
+    .mobile-theme-controls {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        flex: 0 0 auto;
+
+        margin: 0;
+        padding: 0;
+
+        border: 0;
+
+        order: 2;
+    }
+
+    .mobile-theme-button,
+    .mobile-language-button {
+        width: 38px;
+        height: 38px;
+
+        flex: 0 0 38px;
+
+        padding: 0;
+    }
+
+    .brand {
+        order: 1;
+    }
+
+    .mobile-menu-button {
+        order: 3;
+        flex: 0 0 42px;
+    }
+
+    /* منع ظهورهم داخل قائمة الـ3 شرط */
+    .mobile-menu .mobile-theme-controls {
+        display: none !important;
+    }
+}
+
+@media (min-width: 761px) {
+
+    .mobile-theme-controls {
+        display: none !important;
+    }
+}
