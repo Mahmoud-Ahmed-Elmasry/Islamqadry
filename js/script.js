@@ -19,58 +19,330 @@ const header = document.getElementById("header");
 
 
 /* =========================================================
-   THEME
+   THEME + LIGHTWEIGHT WALKING ANIMATION
 ========================================================= */
 
-const savedTheme = localStorage.getItem("site-theme");
+const savedTheme = localStorage.getItem("site-theme") === "light"
+    ? "light"
+    : "dark";
 
-if (savedTheme === "light") {
-    html.setAttribute("data-theme", "light");
+let currentTheme = savedTheme;
+let themeAnimationTimer = null;
+let themeAnimationRunning = false;
+
+function setTheme(theme) {
+    currentTheme = theme;
+
+    html.setAttribute("data-theme", theme);
+    localStorage.setItem("site-theme", theme);
+
+    const icon = theme === "light" ? "☀" : "☾";
 
     if (themeIcon) {
-        themeIcon.textContent = "☀";
+        themeIcon.textContent = icon;
     }
-} else {
-    html.setAttribute("data-theme", "dark");
 
-    if (themeIcon) {
-        themeIcon.textContent = "☾";
+    const mobileIcon = document.getElementById("mobileThemeIcon");
+
+    if (mobileIcon) {
+        mobileIcon.textContent = icon;
     }
 }
 
+setTheme(savedTheme);
 
-if (themeToggle) {
 
-    themeToggle.addEventListener("click", function () {
+function createThemeScene() {
 
-        const currentTheme =
-            html.getAttribute("data-theme");
+    if (document.getElementById("themeSwitchScene")) {
+        return document.getElementById("themeSwitchScene");
+    }
 
-        const newTheme =
-            currentTheme === "light"
-                ? "dark"
-                : "light";
+    const scene = document.createElement("div");
 
-        html.setAttribute(
-            "data-theme",
-            newTheme
+    scene.id = "themeSwitchScene";
+    scene.className = "theme-switch-scene";
+
+    scene.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+    scene.innerHTML = `
+        <div class="theme-switch-card">
+
+            <div class="theme-switch-sky"></div>
+
+            <div class="theme-switch-sun"></div>
+
+            <div class="theme-switch-ground"></div>
+
+            <div class="theme-switch-hole">
+                <span></span>
+            </div>
+
+            <div class="theme-switch-target"></div>
+
+            <div
+                class="theme-switch-person"
+                aria-hidden="true"
+            >
+                <i class="head"></i>
+                <i class="body"></i>
+                <i class="arm arm-left"></i>
+                <i class="arm arm-right"></i>
+                <i class="leg leg-left"></i>
+                <i class="leg leg-right"></i>
+            </div>
+
+        </div>
+    `;
+
+    document.body.appendChild(scene);
+
+    return scene;
+}
+
+
+function positionThemeScene(button, scene) {
+
+    if (!button || !scene) {
+        return;
+    }
+
+    const rect =
+        button.getBoundingClientRect();
+
+    const mobile =
+        window.innerWidth <= 760;
+
+    const width =
+        mobile ? 230 : 270;
+
+    const height =
+        mobile ? 132 : 150;
+
+    let left =
+        rect.left +
+        (rect.width / 2) -
+        (width / 2);
+
+    let top =
+        rect.bottom + 10;
+
+    if (
+        top + height >
+        window.innerHeight - 8
+    ) {
+        top =
+            rect.top -
+            height -
+            10;
+    }
+
+    left =
+        Math.max(
+            8,
+            Math.min(
+                left,
+                window.innerWidth -
+                width -
+                8
+            )
         );
 
-        localStorage.setItem(
-            "site-theme",
-            newTheme
+    top =
+        Math.max(
+            8,
+            Math.min(
+                top,
+                window.innerHeight -
+                height -
+                8
+            )
         );
 
-        if (themeIcon) {
-            themeIcon.textContent =
-                newTheme === "light"
-                    ? "☀"
-                    : "☾";
+    scene.style.left =
+        `${left}px`;
+
+    scene.style.top =
+        `${top}px`;
+}
+
+
+function runThemeAnimation(button) {
+
+    if (
+        themeAnimationRunning ||
+        !button
+    ) {
+        return;
+    }
+
+    const scene =
+        createThemeScene();
+
+    const goingDark =
+        currentTheme === "light";
+
+    const nextTheme =
+        goingDark
+            ? "dark"
+            : "light";
+
+    themeAnimationRunning = true;
+
+    button.disabled = true;
+
+    scene.className =
+        "theme-switch-scene";
+
+    scene.classList.add(
+        goingDark
+            ? "to-dark"
+            : "to-light"
+    );
+
+    if (!goingDark) {
+        scene.classList.add(
+            "light-stage"
+        );
+    }
+
+    positionThemeScene(
+        button,
+        scene
+    );
+
+    void scene.offsetWidth;
+
+    scene.classList.add(
+        "is-visible"
+    );
+
+    if (themeAnimationTimer) {
+        clearTimeout(
+            themeAnimationTimer
+        );
+    }
+
+
+    /*
+        Light → Dark:
+        الشخص يقع في الحفرة
+        وبعدها الوضع يتحول إلى Dark.
+
+        Dark → Light:
+        الشخص يطلع من الحفرة
+        ويمشي للزر
+        وبعدها الوضع يتحول إلى Light.
+    */
+
+    themeAnimationTimer =
+        setTimeout(
+            function () {
+
+                setTheme(
+                    nextTheme
+                );
+
+            },
+            goingDark
+                ? 930
+                : 1060
+        );
+
+
+    themeAnimationTimer =
+        setTimeout(
+            function () {
+
+                scene.classList.remove(
+                    "is-visible",
+                    "to-dark",
+                    "to-light",
+                    "light-stage"
+                );
+
+                scene.setAttribute(
+                    "aria-hidden",
+                    "true"
+                );
+
+                button.disabled =
+                    false;
+
+                themeAnimationRunning =
+                    false;
+
+            },
+            goingDark
+                ? 1180
+                : 1260
+        );
+}
+
+
+function bindThemeButton(button) {
+
+    if (!button) {
+        return;
+    }
+
+    button.addEventListener(
+        "click",
+        function () {
+
+            runThemeAnimation(
+                button
+            );
+
+        }
+    );
+}
+
+
+bindThemeButton(
+    themeToggle
+);
+
+bindThemeButton(
+    document.getElementById(
+        "mobileThemeToggle"
+    )
+);
+
+
+window.addEventListener(
+    "resize",
+    function () {
+
+        if (!themeAnimationRunning) {
+            return;
         }
 
-    });
+        const scene =
+            document.getElementById(
+                "themeSwitchScene"
+            );
 
-}
+        const activeButton =
+            window.innerWidth <= 760
+                ? document.getElementById(
+                    "mobileThemeToggle"
+                )
+                : themeToggle;
+
+        positionThemeScene(
+            activeButton,
+            scene
+        );
+
+    },
+    {
+        passive: true
+    }
+);
 
 
 /* =========================================================
@@ -78,59 +350,90 @@ if (themeToggle) {
 ========================================================= */
 
 let currentLanguage =
-    localStorage.getItem("site-language") || "ar";
+    localStorage.getItem(
+        "site-language"
+    ) || "ar";
 
 
 function updateLanguage(language) {
 
-    currentLanguage = language;
+    currentLanguage =
+        language;
 
     const isArabic =
         language === "ar";
 
+
     html.setAttribute(
         "lang",
-        isArabic ? "ar" : "en"
+        isArabic
+            ? "ar"
+            : "en"
     );
 
     html.setAttribute(
         "dir",
-        isArabic ? "rtl" : "ltr"
+        isArabic
+            ? "rtl"
+            : "ltr"
     );
+
 
     const elements =
         document.querySelectorAll(
             "[data-ar][data-en]"
         );
 
-    elements.forEach(function (element) {
 
-        const text =
-            isArabic
-                ? element.getAttribute("data-ar")
-                : element.getAttribute("data-en");
+    elements.forEach(
+        function (element) {
 
-        if (text !== null) {
-            element.textContent = text;
+            const text =
+                isArabic
+                    ? element.getAttribute(
+                        "data-ar"
+                    )
+                    : element.getAttribute(
+                        "data-en"
+                    );
+
+            if (text !== null) {
+
+                element.textContent =
+                    text;
+
+            }
+
         }
+    );
 
-    });
+
+    const languageButtons = [
+        languageToggle,
+        document.getElementById(
+            "mobileLanguageToggle"
+        )
+    ].filter(Boolean);
 
 
-    if (languageToggle) {
+    languageButtons.forEach(
+        function (button) {
 
-        languageToggle.textContent =
-            isArabic
-                ? "EN"
-                : "AR";
+            button.textContent =
+                isArabic
+                    ? "EN"
+                    : "AR";
 
-        languageToggle.setAttribute(
-            "aria-label",
-            isArabic
-                ? "Switch to English"
-                : "التبديل إلى العربية"
-        );
-    }
+            button.setAttribute(
+                "aria-label",
+                isArabic
+                    ? "Switch to English"
+                    : "التبديل إلى العربية"
+            );
+
+        }
+    );
+
 
     localStorage.setItem(
         "site-language",
@@ -139,26 +442,40 @@ function updateLanguage(language) {
 }
 
 
-updateLanguage(currentLanguage);
+updateLanguage(
+    currentLanguage
+);
 
 
-if (languageToggle) {
+const languageButtons = [
+    languageToggle,
+    document.getElementById(
+        "mobileLanguageToggle"
+    )
+].filter(Boolean);
 
-    languageToggle.addEventListener(
-        "click",
-        function () {
 
-            const newLanguage =
-                currentLanguage === "ar"
-                    ? "en"
-                    : "ar";
+languageButtons.forEach(
+    function (button) {
 
-            updateLanguage(newLanguage);
+        button.addEventListener(
+            "click",
+            function () {
 
-        }
-    );
+                const newLanguage =
+                    currentLanguage === "ar"
+                        ? "en"
+                        : "ar";
 
-}
+                updateLanguage(
+                    newLanguage
+                );
+
+            }
+        );
+
+    }
+);
 
 
 /* =========================================================
@@ -174,29 +491,36 @@ if (
         "click",
         function () {
 
-            mobileMenu.classList.toggle("active");
+            mobileMenu.classList.toggle(
+                "active"
+            );
 
         }
     );
 
 
     const mobileLinks =
-        mobileMenu.querySelectorAll("a");
-
-    mobileLinks.forEach(function (link) {
-
-        link.addEventListener(
-            "click",
-            function () {
-
-                mobileMenu.classList.remove(
-                    "active"
-                );
-
-            }
+        mobileMenu.querySelectorAll(
+            "a"
         );
 
-    });
+
+    mobileLinks.forEach(
+        function (link) {
+
+            link.addEventListener(
+                "click",
+                function () {
+
+                    mobileMenu.classList.remove(
+                        "active"
+                    );
+
+                }
+            );
+
+        }
+    );
 
 }
 
@@ -213,11 +537,15 @@ function updateHeader() {
 
     if (window.scrollY > 20) {
 
-        header.classList.add("scrolled");
+        header.classList.add(
+            "scrolled"
+        );
 
     } else {
 
-        header.classList.remove("scrolled");
+        header.classList.remove(
+            "scrolled"
+        );
 
     }
 
@@ -240,47 +568,58 @@ updateHeader();
 ========================================================= */
 
 const faqItems =
-    document.querySelectorAll(".faq-item");
-
-
-faqItems.forEach(function (item) {
-
-    const question =
-        item.querySelector(".faq-question");
-
-    if (!question) {
-        return;
-    }
-
-    question.addEventListener(
-        "click",
-        function () {
-
-            const wasActive =
-                item.classList.contains("active");
-
-
-            faqItems.forEach(function (otherItem) {
-
-                otherItem.classList.remove(
-                    "active"
-                );
-
-            });
-
-
-            if (!wasActive) {
-
-                item.classList.add(
-                    "active"
-                );
-
-            }
-
-        }
+    document.querySelectorAll(
+        ".faq-item"
     );
 
-});
+
+faqItems.forEach(
+    function (item) {
+
+        const question =
+            item.querySelector(
+                ".faq-question"
+            );
+
+        if (!question) {
+            return;
+        }
+
+
+        question.addEventListener(
+            "click",
+            function () {
+
+                const wasActive =
+                    item.classList.contains(
+                        "active"
+                    );
+
+
+                faqItems.forEach(
+                    function (otherItem) {
+
+                        otherItem.classList.remove(
+                            "active"
+                        );
+
+                    }
+                );
+
+
+                if (!wasActive) {
+
+                    item.classList.add(
+                        "active"
+                    );
+
+                }
+
+            }
+        );
+
+    }
+);
 
 
 /* =========================================================
@@ -288,19 +627,29 @@ faqItems.forEach(function (item) {
 ========================================================= */
 
 const revealElements =
-    document.querySelectorAll(".reveal");
+    document.querySelectorAll(
+        ".reveal"
+    );
 
 
-if ("IntersectionObserver" in window) {
+if (
+    "IntersectionObserver"
+    in window
+) {
 
     const revealObserver =
         new IntersectionObserver(
-            function (entries, observer) {
+            function (
+                entries,
+                observer
+            ) {
 
                 entries.forEach(
                     function (entry) {
 
-                        if (!entry.isIntersecting) {
+                        if (
+                            !entry.isIntersecting
+                        ) {
                             return;
                         }
 
@@ -318,7 +667,8 @@ if ("IntersectionObserver" in window) {
             },
             {
                 threshold: 0.08,
-                rootMargin: "0px 0px -30px 0px"
+                rootMargin:
+                    "0px 0px -30px 0px"
             }
         );
 
@@ -353,7 +703,9 @@ if ("IntersectionObserver" in window) {
 ========================================================= */
 
 const backToTop =
-    document.querySelector(".back-to-top");
+    document.querySelector(
+        ".back-to-top"
+    );
 
 
 if (backToTop) {
@@ -366,7 +718,7 @@ if (backToTop) {
 
             window.scrollTo({
                 top: 0,
-                behavior: "smooth"
+                behavior: "auto"
             });
 
         }

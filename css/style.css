@@ -48,7 +48,7 @@
 }
 
 html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     scroll-padding-top: 90px;
 }
 
@@ -121,8 +121,8 @@ ul {
     background: rgba(13, 13, 12, 0.78);
     border-bottom: 1px solid transparent;
 
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 
     transition:
         background-color var(--transition),
@@ -261,6 +261,7 @@ ul {
     border: 1px solid var(--border);
 
     cursor: pointer;
+    touch-action: manipulation;
 
     transition:
         transform var(--transition),
@@ -1655,6 +1656,25 @@ html[dir="ltr"] .package-card li::before {
         display: flex;
     }
 
+    .mobile-theme-controls {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 8px 6px;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 4px;
+    }
+
+    .mobile-theme-button,
+    .mobile-language-button {
+        width: 38px;
+        height: 38px;
+    }
+
+    .mobile-theme-button {
+        display: grid;
+    }
+
     .mobile-menu {
         position: absolute;
 
@@ -1893,6 +1913,307 @@ html[dir="ltr"] .package-card li::before {
 
 }
 
+
+/* =========================================================
+   MOBILE PERFORMANCE
+========================================================= */
+
+@media (max-width: 760px) {
+
+    .header {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        background: rgba(13, 13, 12, 0.96);
+    }
+
+    [data-theme="light"] .header {
+        background: rgba(245, 241, 232, 0.97);
+    }
+
+    .hero-glow {
+        display: none;
+    }
+
+    .reveal {
+        transition-duration: 320ms;
+        transform: translateY(10px);
+    }
+
+    .service-card,
+    .about-card,
+    .package-card,
+    .video-placeholder,
+    .gallery-placeholder {
+        will-change: auto;
+    }
+}
+
+
+/* =========================================================
+   THEME SWITCH ANIMATION
+========================================================= */
+
+.theme-switch-scene {
+    position: fixed;
+    z-index: 99999;
+    width: 270px;
+    height: 150px;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px) scale(.98);
+    transform-origin: top center;
+}
+
+.theme-switch-scene.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.theme-switch-card {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border: 1px solid rgba(205, 187, 130, .28);
+    border-radius: 20px;
+    background: #191815;
+    box-shadow: 0 16px 40px rgba(0,0,0,.20);
+    isolation: isolate;
+}
+
+.theme-switch-sky {
+    position: absolute;
+    inset: 0;
+    background: #24221d;
+    transition: background-color 180ms linear;
+}
+
+.theme-switch-sun {
+    position: absolute;
+    top: 18px;
+    right: 22px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #cdbb82;
+    opacity: .15;
+    transform: scale(.8);
+    transition: opacity 180ms linear, transform 180ms linear;
+}
+
+.theme-switch-ground {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 43%;
+    background: #11100e;
+    border-top: 1px solid rgba(205,187,130,.12);
+}
+
+.theme-switch-hole {
+    position: absolute;
+    left: 31px;
+    bottom: 19px;
+    width: 66px;
+    height: 22px;
+    border-radius: 50%;
+    background: #050505;
+    box-shadow: inset 0 5px 8px rgba(255,255,255,.025);
+}
+
+.theme-switch-hole::after {
+    content: "";
+    position: absolute;
+    left: 9px;
+    right: 9px;
+    top: 4px;
+    height: 10px;
+    border-radius: 50%;
+    background: #000;
+}
+
+.theme-switch-target {
+    position: absolute;
+    right: 24px;
+    bottom: 25px;
+    width: 12px;
+    height: 12px;
+    border: 1px solid rgba(205,187,130,.65);
+    border-radius: 50%;
+    box-shadow: 0 0 0 5px rgba(205,187,130,.06);
+}
+
+.theme-switch-person {
+    position: absolute;
+    left: 0;
+    bottom: 33px;
+    width: 20px;
+    height: 42px;
+    z-index: 4;
+    transform: translate3d(182px,0,0);
+    transform-origin: 50% 100%;
+    will-change: transform;
+}
+
+.theme-switch-person .head {
+    position: absolute;
+    top: 0;
+    left: 5px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #cdbb82;
+}
+
+.theme-switch-person .body {
+    position: absolute;
+    top: 9px;
+    left: 8px;
+    width: 5px;
+    height: 18px;
+    border-radius: 4px;
+    background: #cdbb82;
+}
+
+.theme-switch-person .arm,
+.theme-switch-person .leg {
+    position: absolute;
+    width: 4px;
+    height: 15px;
+    border-radius: 4px;
+    background: #cdbb82;
+    transform-origin: 50% 0;
+}
+
+.theme-switch-person .arm-left { left: 6px; top: 10px; transform: rotate(28deg); }
+.theme-switch-person .arm-right { left: 11px; top: 10px; transform: rotate(-28deg); }
+.theme-switch-person .leg-left { left: 7px; top: 25px; transform: rotate(22deg); }
+.theme-switch-person .leg-right { left: 11px; top: 25px; transform: rotate(-22deg); }
+
+.theme-switch-scene.light-stage .theme-switch-sky {
+    background: #e8dfca;
+}
+
+.theme-switch-scene.light-stage .theme-switch-ground {
+    background: #b9aa84;
+    border-top-color: rgba(70,58,32,.14);
+}
+
+.theme-switch-scene.light-stage .theme-switch-sun {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.theme-switch-scene.light-stage .theme-switch-card {
+    border-color: rgba(80,65,30,.20);
+}
+
+.theme-switch-scene.to-dark .theme-switch-person {
+    animation: themeWalkToHole 900ms cubic-bezier(.22,.75,.2,1) forwards;
+}
+
+.theme-switch-scene.to-dark .theme-switch-person::after,
+.theme-switch-scene.to-light .theme-switch-person::after {
+    content: "";
+    position: absolute;
+    left: 7px;
+    bottom: -2px;
+    width: 8px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(0,0,0,.22);
+}
+
+.theme-switch-scene.to-dark .theme-switch-person {
+    transform: translate3d(182px,0,0);
+}
+
+.theme-switch-scene.to-light .theme-switch-person {
+    animation: themeWalkFromHole 1050ms cubic-bezier(.22,.75,.2,1) forwards;
+    transform: translate3d(43px,0,0);
+}
+
+.theme-switch-scene.to-dark .theme-switch-person .leg-left {
+    animation: legA 180ms ease-in-out infinite alternate;
+}
+
+.theme-switch-scene.to-dark .theme-switch-person .leg-right {
+    animation: legB 180ms ease-in-out infinite alternate;
+}
+
+.theme-switch-scene.to-light .theme-switch-person .leg-left {
+    animation: legA 180ms ease-in-out infinite alternate;
+}
+
+.theme-switch-scene.to-light .theme-switch-person .leg-right {
+    animation: legB 180ms ease-in-out infinite alternate;
+}
+
+@keyframes themeWalkToHole {
+    0%   { transform: translate3d(182px,0,0); }
+    82%  { transform: translate3d(62px,0,0); }
+    91%  { transform: translate3d(51px,7px,0) rotate(5deg); }
+    100% { transform: translate3d(43px,22px,0) rotate(16deg); opacity: .15; }
+}
+
+@keyframes themeWalkFromHole {
+    0%   { transform: translate3d(43px,22px,0) rotate(16deg); opacity: .15; }
+    12%  { transform: translate3d(43px,0,0) rotate(0); opacity: 1; }
+    88%  { transform: translate3d(158px,0,0) rotate(0); }
+    100% { transform: translate3d(182px,0,0) rotate(0); }
+}
+
+@keyframes legA {
+    from { transform: rotate(25deg); }
+    to   { transform: rotate(-25deg); }
+}
+
+@keyframes legB {
+    from { transform: rotate(-25deg); }
+    to   { transform: rotate(25deg); }
+}
+
+@media (max-width: 760px) {
+    .theme-switch-scene {
+        width: 230px;
+        height: 132px;
+    }
+
+    .theme-switch-person {
+        transform: translate3d(152px,0,0);
+    }
+
+    .theme-switch-scene.to-dark .theme-switch-person {
+        transform: translate3d(152px,0,0);
+    }
+
+    .theme-switch-scene.to-light .theme-switch-person {
+        transform: translate3d(43px,0,0);
+    }
+
+    @keyframes themeWalkToHole {
+        0%   { transform: translate3d(152px,0,0); }
+        82%  { transform: translate3d(62px,0,0); }
+        91%  { transform: translate3d(51px,7px,0) rotate(5deg); }
+        100% { transform: translate3d(43px,22px,0) rotate(16deg); opacity: .15; }
+    }
+
+    @keyframes themeWalkFromHole {
+        0%   { transform: translate3d(43px,22px,0) rotate(16deg); opacity: .15; }
+        12%  { transform: translate3d(43px,0,0) rotate(0); opacity: 1; }
+        88%  { transform: translate3d(130px,0,0) rotate(0); }
+        100% { transform: translate3d(152px,0,0) rotate(0); }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .theme-switch-scene {
+        display: none !important;
+    }
+}
 
 /* =========================================================
    SMALL MOBILE
